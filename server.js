@@ -1,3 +1,5 @@
+require('dotenv').config();  // Đọc biến môi trường từ .env
+
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
@@ -5,26 +7,30 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Tạo thư mục uploads nếu chưa có
+// ✅ Bật CORS – Cho phép truy cập từ frontend đã deploy
+app.use(cors({
+  origin: 'https://ss004.vercel.app', // hoặc '*' nếu muốn cho tất cả (chỉ nên dùng khi test)
+}));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// ✅ Tạo thư mục uploads nếu chưa có
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Cấu hình lưu file
+// ✅ Cấu hình lưu file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
 const upload = multer({ storage });
 
-// API nhận tố cáo
+// ✅ API nhận nội dung tố cáo
 app.post('/api/report', upload.single('file'), (req, res) => {
   const { message } = req.body;
   const fileInfo = req.file;
@@ -48,4 +54,7 @@ app.post('/api/report', upload.single('file'), (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`🚀 Server chạy tại: http://localhost:${PORT}`));
+// ✅ Khởi động server
+app.listen(PORT, () => {
+  console.log(`🚀 Server chạy tại: http://localhost:${PORT}`);
+});
