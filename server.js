@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 // ✅ CORS – Cho phép frontend trên Vercel truy cập
 app.use(cors({
-  origin: 'https://24521252-uit-duchnat.vercel.app' // Đúng với frontend thật của bạn
+  origin: 'https://24521252-uit-ducnhat.vercel.app' // Đúng với frontend thật của bạn
 }));
 
 app.use(express.json());
