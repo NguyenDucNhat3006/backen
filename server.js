@@ -1,4 +1,4 @@
-require('dotenv').config();  // Đọc biến môi trường từ .env
+require('dotenv').config();
 
 const express = require('express');
 const multer = require('multer');
@@ -9,9 +9,9 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Bật CORS – Cho phép truy cập từ frontend đã deploy
+// ✅ CORS – Cho phép frontend trên Vercel truy cập
 app.use(cors({
-  origin: 'https://ss004.vercel.app', // hoặc '*' nếu muốn cho tất cả (chỉ nên dùng khi test)
+  origin: 'https://24521252-uit-duchnat.vercel.app' // Đúng với frontend thật của bạn
 }));
 
 app.use(express.json());
